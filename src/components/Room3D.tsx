@@ -703,6 +703,36 @@ function RoomScene({
 
 export { parseDimensions };
 
+export type CameraPreset = "frontal" | "canto" | "lateral" | "topo";
+
+const PRESETS: Record<CameraPreset, { azimuth: number; polar: number; dist: number }> = {
+  frontal: { azimuth: Math.PI / 2, polar: 1.32, dist: 0.95 },
+  canto: { azimuth: Math.PI / 4, polar: 1.2, dist: 1.05 },
+  lateral: { azimuth: 0, polar: 1.35, dist: 0.95 },
+  topo: { azimuth: Math.PI / 2, polar: 0.55, dist: 1.25 },
+};
+
+/** Reposiciona a câmera quando o usuário troca o ângulo de visualização. */
+function CameraPresetRig({ preset, radius }: { preset?: CameraPreset | undefined; radius: number }) {
+  const camera = useThree((s) => s.camera);
+  const controls = useThree((s) => s.controls) as { target: THREE.Vector3; update: () => void } | null;
+
+  useEffect(() => {
+    if (!preset) return;
+    const p = PRESETS[preset];
+    const r = Math.max(2.2, radius * p.dist);
+    camera.position.set(
+      Math.cos(p.azimuth) * Math.sin(p.polar) * r,
+      Math.max(1.2, Math.cos(p.polar) * r + 1.1),
+      Math.sin(p.azimuth) * Math.sin(p.polar) * r,
+    );
+    camera.lookAt(0, 1.1, 0);
+    controls?.update();
+  }, [preset, radius, camera, controls]);
+
+  return null;
+}
+
 export default function Room3D({
   v,
   dimensions,
@@ -710,6 +740,8 @@ export default function Room3D({
   selectedId = null,
   onSelect,
   onMove,
+  cameraPreset,
+  capture = false,
 }: {
   v: Visualization;
   dimensions: string;
@@ -717,6 +749,9 @@ export default function Room3D({
   selectedId?: string | null;
   onSelect?: (id: string | null) => void;
   onMove?: (id: string, x: number, z: number) => void;
+  cameraPreset?: CameraPreset | undefined;
+  /** mantém o buffer do WebGL para permitir exportar a imagem do render */
+  capture?: boolean;
 }) {
   const parsed = parseDimensions(dimensions);
   const b = v.plan ? planBounds(v.plan) : null;
@@ -729,7 +764,12 @@ export default function Room3D({
       shadows
       dpr={[1, 2]}
       camera={{ position: [w * 0.42, 1.65, d * 0.92], fov: 50 }}
-      gl={{ antialias: true, toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 1.05 }}
+      gl={{
+        antialias: true,
+        toneMapping: THREE.ACESFilmicToneMapping,
+        toneMappingExposure: 1.05,
+        preserveDrawingBuffer: capture,
+      }}
       onPointerMissed={() => editable && onSelect?.(null)}
     >
       <color attach="background" args={["#0d1014"]} />
@@ -755,6 +795,8 @@ export default function Room3D({
         maxPolarAngle={Math.PI / 2.08}
         target={[0, 1.1, 0]}
       />
+      <CameraPresetRig preset={cameraPreset} radius={Math.max(w, d)} />
     </Canvas>
   );
 }
+
