@@ -5,6 +5,7 @@ import {
   ChevronRight,
   FolderKanban,
   ListChecks,
+  ScanLine,
   Settings,
   Users,
 } from "lucide-react";
@@ -48,6 +49,12 @@ const groups: Array<{
         label: "Checklists",
         desc: "Visita técnica, execução e entrega",
         icon: ListChecks,
+      },
+      {
+        to: "/planta",
+        label: "Planta baixa → 3D",
+        desc: "Suba a planta e gere a visualização 3D",
+        icon: ScanLine,
       },
       {
         to: "/materiais",
