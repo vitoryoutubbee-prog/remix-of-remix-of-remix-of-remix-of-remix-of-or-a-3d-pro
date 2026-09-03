@@ -1,6 +1,6 @@
 import { ContactShadows, Environment, Lightformer, OrbitControls, RoundedBox, SoftShadows } from "@react-three/drei";
-import { Canvas } from "@react-three/fiber";
-import { useMemo, useState } from "react";
+import { Canvas, useThree } from "@react-three/fiber";
+import { useEffect, useMemo, useState } from "react";
 import * as THREE from "three";
 import { parseDimensions } from "@/components/Room3D.helpers";
 import { SceneObjectMesh } from "@/components/SceneObject";
