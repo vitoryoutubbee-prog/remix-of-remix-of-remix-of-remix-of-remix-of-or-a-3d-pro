@@ -1,4 +1,5 @@
 import { lazy, Suspense, useEffect, useState } from "react";
+import type { CameraPreset } from "@/components/Room3D";
 import type { Visualization } from "@/lib/types";
 
 /**
@@ -18,6 +19,9 @@ export function RoomViewer3D({
   onMove,
   className = "aspect-16/10",
   hint,
+  cameraPreset,
+  capture = false,
+  containerRef,
 }: {
   v: Visualization;
   roomName: string;
@@ -28,6 +32,9 @@ export function RoomViewer3D({
   onMove?: (id: string, x: number, z: number) => void;
   className?: string;
   hint?: string;
+  cameraPreset?: CameraPreset | undefined;
+  capture?: boolean;
+  containerRef?: React.Ref<HTMLDivElement>;
 }) {
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
@@ -44,6 +51,7 @@ export function RoomViewer3D({
 
   return (
     <div
+      ref={containerRef}
       className={`relative w-full overflow-hidden rounded-xl border border-border bg-muted ${className}`}
       role="img"
       aria-label={`Visualização 3D interativa do ambiente ${roomName}`}
@@ -55,6 +63,8 @@ export function RoomViewer3D({
             dimensions={dimensions}
             editable={editable}
             selectedId={selectedId}
+            capture={capture}
+            cameraPreset={cameraPreset}
             {...(onSelect ? { onSelect } : {})}
             {...(onMove ? { onMove } : {})}
           />
