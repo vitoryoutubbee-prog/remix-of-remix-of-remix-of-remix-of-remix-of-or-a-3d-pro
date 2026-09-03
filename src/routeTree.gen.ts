@@ -16,6 +16,7 @@ import { Route as EmpresaRouteImport } from './routes/empresa'
 import { Route as MaisRouteImport } from './routes/mais'
 import { Route as MateriaisRouteImport } from './routes/materiais'
 import { Route as OrcamentosRouteImport } from './routes/orcamentos'
+import { Route as PlantaRouteImport } from './routes/planta'
 import { Route as ClientesIndexRouteImport } from './routes/clientes/index'
 import { Route as ClientesIdRouteImport } from './routes/clientes/$id'
 import { Route as ProjetosIndexRouteImport } from './routes/projetos/index'
@@ -57,6 +58,11 @@ const OrcamentosRoute = OrcamentosRouteImport.update({
   path: '/orcamentos',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PlantaRoute = PlantaRouteImport.update({
+  id: '/planta',
+  path: '/planta',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ClientesIndexRoute = ClientesIndexRouteImport.update({
   id: '/clientes/',
   path: '/clientes/',
@@ -91,6 +97,7 @@ export interface FileRoutesByFullPath {
   '/mais': typeof MaisRoute
   '/materiais': typeof MateriaisRoute
   '/orcamentos': typeof OrcamentosRoute
+  '/planta': typeof PlantaRoute
   '/clientes/$id': typeof ClientesIdRoute
   '/projetos/$id': typeof ProjetosIdRoute
   '/projetos/novo': typeof ProjetosNovoRoute
@@ -105,6 +112,7 @@ export interface FileRoutesByTo {
   '/mais': typeof MaisRoute
   '/materiais': typeof MateriaisRoute
   '/orcamentos': typeof OrcamentosRoute
+  '/planta': typeof PlantaRoute
   '/clientes/$id': typeof ClientesIdRoute
   '/projetos/$id': typeof ProjetosIdRoute
   '/projetos/novo': typeof ProjetosNovoRoute
@@ -120,6 +128,7 @@ export interface FileRoutesById {
   '/mais': typeof MaisRoute
   '/materiais': typeof MateriaisRoute
   '/orcamentos': typeof OrcamentosRoute
+  '/planta': typeof PlantaRoute
   '/clientes/$id': typeof ClientesIdRoute
   '/projetos/$id': typeof ProjetosIdRoute
   '/projetos/novo': typeof ProjetosNovoRoute
@@ -136,6 +145,7 @@ export interface FileRouteTypes {
     | '/mais'
     | '/materiais'
     | '/orcamentos'
+    | '/planta'
     | '/clientes/$id'
     | '/projetos/$id'
     | '/projetos/novo'
@@ -150,6 +160,7 @@ export interface FileRouteTypes {
     | '/mais'
     | '/materiais'
     | '/orcamentos'
+    | '/planta'
     | '/clientes/$id'
     | '/projetos/$id'
     | '/projetos/novo'
@@ -164,6 +175,7 @@ export interface FileRouteTypes {
     | '/mais'
     | '/materiais'
     | '/orcamentos'
+    | '/planta'
     | '/clientes/$id'
     | '/projetos/$id'
     | '/projetos/novo'
@@ -179,6 +191,7 @@ export interface RootRouteChildren {
   MaisRoute: typeof MaisRoute
   MateriaisRoute: typeof MateriaisRoute
   OrcamentosRoute: typeof OrcamentosRoute
+  PlantaRoute: typeof PlantaRoute
   ClientesIdRoute: typeof ClientesIdRoute
   ProjetosIdRoute: typeof ProjetosIdRoute
   ProjetosNovoRoute: typeof ProjetosNovoRoute
@@ -237,6 +250,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OrcamentosRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/planta': {
+      id: '/planta'
+      path: '/planta'
+      fullPath: '/planta'
+      preLoaderRoute: typeof PlantaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/clientes/': {
       id: '/clientes/'
       path: '/clientes'
@@ -283,6 +303,7 @@ const rootRouteChildren: RootRouteChildren = {
   MaisRoute: MaisRoute,
   MateriaisRoute: MateriaisRoute,
   OrcamentosRoute: OrcamentosRoute,
+  PlantaRoute: PlantaRoute,
   ClientesIdRoute: ClientesIdRoute,
   ProjetosIdRoute: ProjetosIdRoute,
   ProjetosNovoRoute: ProjetosNovoRoute,

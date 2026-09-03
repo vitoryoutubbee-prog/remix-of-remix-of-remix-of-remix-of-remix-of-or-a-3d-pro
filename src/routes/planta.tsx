@@ -310,7 +310,7 @@ function PlantaPage() {
         <div className="space-y-4">
           <SectionCard
             title={analysis.title || "Projeto em 3D"}
-            subtitle={`${analysis.rooms.length} ambiente(s) · ${analysis.totalAreaM2.toFixed(2)} m² estimados`}
+            description={`${analysis.rooms.length} ambiente(s) · ${analysis.totalAreaM2.toFixed(2)} m² estimados`}
           >
             <div className="mb-3 flex flex-wrap gap-2">
               {analysis.rooms.map((r, i) => (
@@ -387,7 +387,7 @@ function PlantaPage() {
             </div>
           </SectionCard>
 
-          <SectionCard title="Usar em um projeto" subtitle="Adiciona os ambientes gerados a uma obra existente.">
+          <SectionCard title="Usar em um projeto" description="Adiciona os ambientes gerados a uma obra existente.">
             {state.projects.length ? (
               <div className="flex flex-wrap gap-2">
                 {state.projects.map((p) => (
@@ -430,7 +430,7 @@ function UploadStage({ onFile }: { onFile: (f: File) => void | Promise<void> }) 
   const [over, setOver] = useState(false);
 
   return (
-    <SectionCard title="Enviar planta baixa" subtitle="JPG, PNG ou PDF até 10 MB.">
+    <SectionCard title="Enviar planta baixa" description="JPG, PNG ou PDF até 10 MB.">
       <div
         onDragOver={(e) => {
           e.preventDefault();
