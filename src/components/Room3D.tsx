@@ -706,32 +706,35 @@ export { parseDimensions };
 export type CameraPreset = "frontal" | "canto" | "lateral" | "topo";
 
 const PRESETS: Record<CameraPreset, { azimuth: number; polar: number; dist: number }> = {
-  frontal: { azimuth: Math.PI / 2, polar: 1.32, dist: 0.95 },
-  canto: { azimuth: Math.PI / 4, polar: 1.2, dist: 1.05 },
-  lateral: { azimuth: 0, polar: 1.35, dist: 0.95 },
-  topo: { azimuth: Math.PI / 2, polar: 0.55, dist: 1.25 },
+  frontal: { azimuth: Math.PI / 2, polar: 1.42, dist: 0.46 },
+  canto: { azimuth: Math.PI / 4, polar: 1.3, dist: 0.5 },
+  lateral: { azimuth: 0, polar: 1.42, dist: 0.46 },
+  topo: { azimuth: Math.PI / 2, polar: 0.52, dist: 1.05 },
 };
 
 /** Reposiciona a câmera quando o usuário troca o ângulo de visualização. */
-function CameraPresetRig({ preset, radius }: { preset?: CameraPreset | undefined; radius: number }) {
+function CameraPresetRig({ preset, w, d }: { preset?: CameraPreset | undefined; w: number; d: number }) {
   const camera = useThree((s) => s.camera);
   const controls = useThree((s) => s.controls) as { target: THREE.Vector3; update: () => void } | null;
 
   useEffect(() => {
     if (!preset) return;
     const p = PRESETS[preset];
-    const r = Math.max(2.2, radius * p.dist);
+    const base = preset === "topo" ? Math.max(w, d) : Math.min(w, d);
+    const r = Math.max(1.8, base * p.dist);
     camera.position.set(
       Math.cos(p.azimuth) * Math.sin(p.polar) * r,
-      Math.max(1.2, Math.cos(p.polar) * r + 1.1),
+      Math.max(1.2, Math.cos(p.polar) * r + 1.2),
       Math.sin(p.azimuth) * Math.sin(p.polar) * r,
     );
+    controls?.target.set(0, 1.1, 0);
     camera.lookAt(0, 1.1, 0);
     controls?.update();
-  }, [preset, radius, camera, controls]);
+  }, [preset, w, d, camera, controls]);
 
   return null;
 }
+
 
 export default function Room3D({
   v,
