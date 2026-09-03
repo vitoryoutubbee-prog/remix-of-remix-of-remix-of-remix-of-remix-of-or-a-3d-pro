@@ -798,7 +798,7 @@ export default function Room3D({
         maxPolarAngle={Math.PI / 2.08}
         target={[0, 1.1, 0]}
       />
-      <CameraPresetRig preset={cameraPreset} radius={Math.max(w, d)} />
+      <CameraPresetRig preset={cameraPreset} w={w} d={d} />
     </Canvas>
   );
 }
